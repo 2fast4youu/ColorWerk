@@ -706,10 +706,10 @@
     <string name="display_module_calculates_battery_health_data">Vom Modul berechneten Akkuzustand anzeigen</string>
     <string name="display_module_calculates_battery_health_data_summary">Zeigt die vom Modul berechneten Zustandsdaten unterhalb der Systemdaten an.</string>
     <string name="display_module_calculates_battery_health_data_tips">Berechnete maximale Kapazität</string>
-    <string name="enable_stop_charging_at_80">Laden bei 80 % stoppen</string>
+    <string name="enable_stop_charging_at_80">Ladestopp bei 80%</string>
     <string name="show_phone_usage_screen_time">Letzte Bildschirmnutzungszeit anzeigen</string>
     <string name="remove_auto_enter_super_power_save">Automatischen Super-Energiesparmodus entfernen</string>
-    <string name="remove_auto_enter_super_power_save_summary">Verhindert den automatischen Wechsel in den Super-Energiesparmodus unter 2 % Akku</string>
+    <string name="remove_auto_enter_super_power_save_summary">Verhindert den automatischen Wechsel in den Super-Energiesparmodus unter 2%</string>
     <string name="remove_battery_temperature_control">Akku-Temperaturbegrenzung entfernen</string>
     <string name="remove_battery_temperature_control_summary">Entfernt Funktionssperren bei Hitze, z. B. für Kamera, Taschenlampe, Hotspot und Display-Engine</string>
     <string name="BatteryOptimization">Akkuoptimierung</string>
