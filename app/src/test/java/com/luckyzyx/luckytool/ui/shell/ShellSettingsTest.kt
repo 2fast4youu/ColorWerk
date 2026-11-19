@@ -1,9 +1,9 @@
-package com.luckyzyx.luckytool.ui.shell
+package at.gregor.colorwerk.ui.shell
 
 import android.app.Application
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.utils.SettingsPrefs
-import com.luckyzyx.luckytool.utils.appPrefs
+import at.gregor.colorwerk.utils.SettingsPrefs
+import at.gregor.colorwerk.utils.appPrefs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import android.os.Bundle
@@ -16,18 +16,18 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import com.luckyzyx.luckytool.R
-import com.luckyzyx.luckytool.ui.compose.pages.HomeDashboard
-import com.luckyzyx.luckytool.ui.compose.pages.HomeDashboardState
-import com.luckyzyx.luckytool.ui.shell.FloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.shell.LocalEnableFloatingBottomBar
-import com.luckyzyx.luckytool.ui.shell.LocalFloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.theme.AppSettings
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.LocalUiMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.UiMode
-import com.luckyzyx.luckytool.utils.DeviceInfoEntry
+import at.gregor.colorwerk.R
+import at.gregor.colorwerk.ui.compose.pages.HomeDashboard
+import at.gregor.colorwerk.ui.compose.pages.HomeDashboardState
+import at.gregor.colorwerk.ui.shell.FloatingBottomBarStyle
+import at.gregor.colorwerk.ui.shell.LocalEnableFloatingBottomBar
+import at.gregor.colorwerk.ui.shell.LocalFloatingBottomBarStyle
+import at.gregor.colorwerk.ui.theme.AppSettings
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.LocalUiMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.UiMode
+import at.gregor.colorwerk.utils.DeviceInfoEntry
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -40,14 +40,14 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class HomeDashboardTest {
 
     companion object {
         private const val model = "realme RMX5200 真我 GT8 Pro"
-        private const val rootLine = "Root来源: 3.3.1 (32680)"
-        private const val frameworkLine = "框架版本: LSPosed v2.2.1 (7912)"
+        private const val rootLine = "Root-Anbieter: 3.3.1 (32680)"
+        private const val frameworkLine = "Framework-Version: LSPosed v2.2.1 (7912)"
         private val sample = HomeDashboardState(
             moduleActive = true, moduleVersion = "1.3.5_beta (22848)",
             rootVersion = "Root 来源：3.3.1 (32680)", frameworkVersion = "框架版本：LSPosed v2.2.1 (7912)",
@@ -70,15 +70,15 @@ class HomeDashboardTest {
         for (mode in UiMode.entries) {
             for (color in listOf(ColorMode.LIGHT, ColorMode.DARK)) {
                 HomeHost(mode, color).use { h ->
-                    assertNotNull(h.ui.textNode("模块已激活"))
+                    assertNotNull(h.ui.textNode("Modul aktiviert"))
                     assertNull(h.ui.textNode("RMX5200_17.0.0.106(CN01) 97 b45da55c"))
                     h.scrollTo(model)
                     val body = h.layout(model)
                     assertEquals(FontWeight.Normal, body.layoutInput.style.fontWeight)
                     h.ui.snapshot("home-${mode.name.lowercase()}-${color.name.lowercase()}")
                     assertFalse("$mode ${body.size} paragraph=${body.multiParagraph.width}x${body.multiParagraph.height} lines=${body.lineCount}", body.hasVisualOverflow)
-                    h.scrollTo("更多设备信息")
-                    h.ui.clickText("更多设备信息")
+                    h.scrollTo("Mehr Geräteinformationen")
+                    h.ui.clickText("Mehr Geräteinformationen")
                     h.ui.advance()
                     h.scrollTo("RMX5200_17.0.0.106(CN01) 97 b45da55c")
                     assertEquals(FontWeight.Normal, h.layout("RMX5200_17.0.0.106(CN01) 97 b45da55c").layoutInput.style.fontWeight)
@@ -96,38 +96,38 @@ class HomeDashboardTest {
             h.ui.clickLabel(h.ui.activity.getString(R.string.about_title))
             assertEquals(1, h.restart)
             assertEquals(1, h.about)
-            h.longClick("模块已激活")
+            h.longClick("Modul aktiviert")
             assertEquals(1, h.status)
-            h.scrollTo("检测到新版本!")
-            h.ui.clickText("检测到新版本!")
+            h.scrollTo("Neue Version entdeckt!")
+            h.ui.clickText("Neue Version entdeckt!")
             assertEquals(1, h.update)
             h.scrollTo(model)
             h.longClick(model)
             assertEquals(1, h.copy)
-            h.scrollTo("更多设备信息")
-            h.ui.clickText("更多设备信息")
+            h.scrollTo("Mehr Geräteinformationen")
+            h.ui.clickText("Mehr Geräteinformationen")
             h.ui.advance()
             h.scrollTo(frameworkLine)
             assertNotNull(h.ui.textNode(rootLine))
             h.mode = UiMode.Material
             h.ui.advance()
-            h.scrollTo("收起详细信息")
-            assertNotNull(h.ui.textNode("收起详细信息"))
-            h.ui.clickText("收起详细信息")
+            h.scrollTo("Weniger Geräteinformationen")
+            assertNotNull(h.ui.textNode("Weniger Geräteinformationen"))
+            h.ui.clickText("Weniger Geräteinformationen")
             h.ui.advance()
-            h.scrollTo("支持开发")
-            h.ui.clickText("支持开发")
-            h.longClick("支持开发")
+            h.scrollTo("Unterstützungsentwicklung")
+            h.ui.clickText("Unterstützungsentwicklung")
+            h.longClick("Unterstützungsentwicklung")
             assertEquals(1, h.donate)
             assertEquals(1, h.donateMethods)
-            h.scrollTo("更多设备信息")
-            h.ui.clickText("更多设备信息")
+            h.scrollTo("Mehr Geräteinformationen")
+            h.ui.clickText("Mehr Geräteinformationen")
             h.ui.advance()
             saved = h.ui.saveAndClose()
         }
         HomeHost(UiMode.Material, ColorMode.LIGHT, saved = saved, update = true).use { h ->
-            h.scrollTo("收起详细信息")
-            assertNotNull(h.ui.textNode("收起详细信息"))
+            h.scrollTo("Weniger Geräteinformationen")
+            assertNotNull(h.ui.textNode("Weniger Geräteinformationen"))
         }
     }
 
@@ -138,9 +138,9 @@ class HomeDashboardTest {
                 h.data = h.data.copy(moduleActive = false, deviceInfo = null, rootVersion = null, frameworkVersion = null)
                 h.ui.advance()
                 assertNotNull(h.ui.textNode(h.ui.activity.getString(R.string.module_is_disabled)))
-                h.scrollTo("正在读取设备信息…")
-                assertNotNull(h.ui.textNode("正在读取设备信息…"))
-                assertNull(h.ui.textNode("更多设备信息"))
+                h.scrollTo("Informationen zum Lesegerät ...")
+                assertNotNull(h.ui.textNode("Informationen zum Lesegerät ..."))
+                assertNull(h.ui.textNode("Mehr Geräteinformationen"))
                 h.data = sample.copy(moduleActive = false)
                 h.ui.advance()
                 h.scrollTo(model)
@@ -148,8 +148,8 @@ class HomeDashboardTest {
                 val bounds = h.ui.textNode(model)!!.boundsInRoot
                 assertTrue(bounds.left >= 0 && bounds.right <= 720)
                 h.ui.snapshot("home-${mode.name.lowercase()}-large-rtl")
-                h.scrollTo("支持开发")
-                h.ui.clickText("支持开发")
+                h.scrollTo("Unterstützungsentwicklung")
+                h.ui.clickText("Unterstützungsentwicklung")
                 assertEquals(1, h.donate)
             }
         }
@@ -164,7 +164,7 @@ class HomeDashboardTest {
                 assertFalse(h.layout(version).hasVisualOverflow)
                 assertFalse(h.layout(framework).hasVisualOverflow)
                 assertTrue(h.ui.textNode(version)!!.boundsInRoot.bottom <= h.ui.textNode(framework)!!.boundsInRoot.top)
-                h.longClick("模块已激活")
+                h.longClick("Modul aktiviert")
                 assertEquals(1, h.status)
                 h.ui.snapshot("home-status-${color.name.lowercase()}-large-rtl")
             }

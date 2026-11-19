@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import androidx.compose.foundation.layout.Box
@@ -19,11 +19,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.navigationevent.DirectNavigationEventInput
 import androidx.navigationevent.NavigationEvent
-import com.luckyzyx.luckytool.ui.shell.LocalEnableSwipeDismiss
-import com.luckyzyx.luckytool.ui.theme.AppSettings
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.UiMode
+import at.gregor.colorwerk.ui.shell.LocalEnableSwipeDismiss
+import at.gregor.colorwerk.ui.theme.AppSettings
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.UiMode
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

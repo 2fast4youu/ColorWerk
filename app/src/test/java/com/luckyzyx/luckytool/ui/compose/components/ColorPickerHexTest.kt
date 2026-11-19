@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.components
+package at.gregor.colorwerk.ui.compose.components
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

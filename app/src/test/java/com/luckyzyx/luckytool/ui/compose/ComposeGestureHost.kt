@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

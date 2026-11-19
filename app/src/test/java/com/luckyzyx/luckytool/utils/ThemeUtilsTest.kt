@@ -1,9 +1,9 @@
-package com.luckyzyx.luckytool.utils
+package at.gregor.colorwerk.utils
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.ColorMode
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

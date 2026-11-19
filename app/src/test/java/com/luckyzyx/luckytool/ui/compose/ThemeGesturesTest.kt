@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import android.os.Bundle
@@ -7,20 +7,20 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import com.luckyzyx.luckytool.ui.compose.pages.ThemeScreen
-import com.luckyzyx.luckytool.ui.shell.FloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.shell.LocalFloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.shell.LocalEnableBlur
-import com.luckyzyx.luckytool.ui.shell.LocalEnableSwipeDismiss
-import com.luckyzyx.luckytool.ui.shell.LocalPagerInterceptionMode
-import com.luckyzyx.luckytool.ui.shell.PagerModeCrossAxis
-import com.luckyzyx.luckytool.ui.shell.ShellSettingsController
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.ThemeController
-import com.luckyzyx.luckytool.ui.theme.UiMode
-import com.luckyzyx.luckytool.utils.SettingsPrefs
-import com.luckyzyx.luckytool.utils.appPrefs
+import at.gregor.colorwerk.ui.compose.pages.ThemeScreen
+import at.gregor.colorwerk.ui.shell.FloatingBottomBarStyle
+import at.gregor.colorwerk.ui.shell.LocalFloatingBottomBarStyle
+import at.gregor.colorwerk.ui.shell.LocalEnableBlur
+import at.gregor.colorwerk.ui.shell.LocalEnableSwipeDismiss
+import at.gregor.colorwerk.ui.shell.LocalPagerInterceptionMode
+import at.gregor.colorwerk.ui.shell.PagerModeCrossAxis
+import at.gregor.colorwerk.ui.shell.ShellSettingsController
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.ThemeController
+import at.gregor.colorwerk.ui.theme.UiMode
+import at.gregor.colorwerk.utils.SettingsPrefs
+import at.gregor.colorwerk.utils.appPrefs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -33,7 +33,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ThemeGesturesTest {
     @Test
@@ -45,16 +45,16 @@ class ThemeGesturesTest {
                 ThemeHost(mode, color).use { h ->
                     assertTrue(h.swipe)
                     assertEquals(PagerModeCrossAxis, h.pagerMode)
-                    h.scrollTo("横移返回手势")
-                    assertNull(h.ui.textNode("预测性返回手势"))
-                    h.ui.clickText("横移返回手势")
+                    h.scrollTo("Zurück per Wischgeste")
+                    assertNull(h.ui.textNode("Vorausschauende Zurück-Geste"))
+                    h.ui.clickText("Zurück per Wischgeste")
                     h.ui.advance()
                     assertFalse(h.swipe)
                     assertFalse(ShellSettingsController.get(h.ui.activity).swipeDismiss)
-                    h.scrollTo("页面切换手势")
+                    h.scrollTo("Wischgesten für Seiten")
                     h.ui.snapshot("theme-${mode.name.lowercase()}-${color.name.lowercase()}")
-                    for ((index, label) in listOf(2 to "iOS 风格", 0 to "默认", 1 to "跨轴拦截")) {
-                        h.ui.clickText("页面切换手势")
+                    for ((index, label) in listOf(2 to "Wie bei iOS", 0 to "Ausfall", 1 to "Achsenübergreifend")) {
+                        h.ui.clickText("Wischgesten für Seiten")
                         h.ui.advance()
                         h.ui.snapshot("theme-${mode.name.lowercase()}-${color.name.lowercase()}-menu")
                         h.ui.clickText(label)
@@ -73,12 +73,12 @@ class ThemeGesturesTest {
     fun `supported Android shows predictive back before swipe and pager mode`() {
         for (mode in UiMode.entries) {
             ThemeHost(mode, ColorMode.LIGHT).use { h ->
-                h.scrollTo("预测性返回手势")
-                assertNotNull(h.ui.textNode("横移返回手势"))
-                assertNotNull(h.ui.textNode("页面切换手势"))
-                val predictiveY = h.ui.textNode("预测性返回手势")!!.boundsInRoot.top
-                val swipeY = h.ui.textNode("横移返回手势")!!.boundsInRoot.top
-                val pagerY = h.ui.textNode("页面切换手势")!!.boundsInRoot.top
+                h.scrollTo("Vorausschauende Zurück-Geste")
+                assertNotNull(h.ui.textNode("Zurück per Wischgeste"))
+                assertNotNull(h.ui.textNode("Wischgesten für Seiten"))
+                val predictiveY = h.ui.textNode("Vorausschauende Zurück-Geste")!!.boundsInRoot.top
+                val swipeY = h.ui.textNode("Zurück per Wischgeste")!!.boundsInRoot.top
+                val pagerY = h.ui.textNode("Wischgesten für Seiten")!!.boundsInRoot.top
                 assertTrue(predictiveY < swipeY && swipeY < pagerY)
             }
         }
@@ -89,21 +89,21 @@ class ThemeGesturesTest {
         for (mode in listOf(UiMode.Material)) {
             val saved: Bundle
             ThemeHost(mode, ColorMode.LIGHT).use { h ->
-                h.scrollTo("横移返回手势")
-                h.ui.clickText("横移返回手势")
+                h.scrollTo("Zurück per Wischgeste")
+                h.ui.clickText("Zurück per Wischgeste")
                 h.ui.advance()
-                h.scrollTo("页面切换手势")
-                h.ui.clickText("页面切换手势")
+                h.scrollTo("Wischgesten für Seiten")
+                h.ui.clickText("Wischgesten für Seiten")
                 h.ui.advance()
-                h.ui.clickText("iOS 风格")
+                h.ui.clickText("Wie bei iOS")
                 h.ui.advance()
                 saved = h.ui.saveAndClose()
             }
             ThemeHost(mode, ColorMode.LIGHT, saved).use { h ->
                 assertFalse(h.swipe)
                 assertEquals(2, h.pagerMode)
-                h.scrollTo("页面切换手势")
-                assertNotNull(h.ui.textNode("iOS 风格"))
+                h.scrollTo("Wischgesten für Seiten")
+                assertNotNull(h.ui.textNode("Wie bei iOS"))
             }
         }
     }
@@ -112,17 +112,17 @@ class ThemeGesturesTest {
     fun `floating styles are revealed by the switch and persist with independent global blur`() {
         val saved: Bundle
         ThemeHost(UiMode.Material, ColorMode.LIGHT).use { h ->
-            h.scrollTo("悬浮底栏")
-            assertNull(h.ui.textNode("悬浮底栏样式"))
-            h.ui.clickText("悬浮底栏")
+            h.scrollTo("Schwebende Navigationsleiste")
+            assertNull(h.ui.textNode("Stil der schwebenden Navigationsleiste"))
+            h.ui.clickText("Schwebende Navigationsleiste")
             h.ui.advance()
-            h.scrollTo("悬浮底栏样式")
+            h.scrollTo("Stil der schwebenden Navigationsleiste")
             for ((style, label) in listOf(
-                FloatingBottomBarStyle.IosLike to "iOS 风格（液态玻璃）",
-                FloatingBottomBarStyle.Classic to "经典",
-                FloatingBottomBarStyle.IosLike to "iOS 风格（液态玻璃）",
+                FloatingBottomBarStyle.IosLike to "iOS-Stil (Liquid Glass)",
+                FloatingBottomBarStyle.Classic to "Klassisch",
+                FloatingBottomBarStyle.IosLike to "iOS-Stil (Liquid Glass)",
             )) {
-                h.ui.clickText("悬浮底栏样式")
+                h.ui.clickText("Stil der schwebenden Navigationsleiste")
                 h.ui.advance()
                 h.ui.snapshot("theme-floating-style-menu")
                 h.ui.clickText(label)
@@ -131,7 +131,7 @@ class ThemeGesturesTest {
                 assertEquals(style, ShellSettingsController.get(h.ui.activity).floatingBottomBarStyle)
                 assertFalse("Style choice must not turn on global blur", h.blur)
             }
-            h.ui.clickText("模糊")
+            h.ui.clickText("Unschärfe")
             h.ui.advance()
             assertTrue(h.blur)
             assertEquals(FloatingBottomBarStyle.IosLike, h.floatingStyle)
@@ -149,8 +149,8 @@ class ThemeGesturesTest {
     fun `coui owns its bottom navigation so the floating bar settings are hidden`() {
         ThemeHost(UiMode.Coui, ColorMode.LIGHT).use { h ->
             repeat(8) { h.ui.drag(420f, 1400f, 420f, 650f) }
-            assertNull(h.ui.textNode("悬浮底栏"))
-            assertNull(h.ui.textNode("悬浮底栏样式"))
+            assertNull(h.ui.textNode("Schwebende Navigationsleiste"))
+            assertNull(h.ui.textNode("Stil der schwebenden Navigationsleiste"))
             h.ui.snapshot("theme-coui-without-floating-bar")
         }
     }

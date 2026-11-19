@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import android.content.Context
 import android.os.Looper
@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.platform.ComposeView
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.components.ScopeScreen
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.ScopeScreen
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

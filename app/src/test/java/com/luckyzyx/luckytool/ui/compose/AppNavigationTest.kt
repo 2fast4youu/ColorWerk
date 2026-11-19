@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import android.os.Bundle
@@ -44,7 +44,7 @@ class AppNavigationTest {
         val routes: List<AppRoute> = listOf(
             MainRoute,
             ThemeRoute,
-            ScopeRoute("statusbar", "状态栏", "clock_style", 12),
+            ScopeRoute("statusbar", "Statusleiste", "clock_style", 12),
         )
         assertEquals(routes, Json.decodeFromString<List<AppRoute>>(Json.encodeToString(routes)))
     }
@@ -54,7 +54,7 @@ class AppNavigationTest {
         val host = createHost()
         assertEquals(listOf<AppRoute>(MainRoute), host.nav.routes())
 
-        val page = ScopeRoute("statusbar", "状态栏")
+        val page = ScopeRoute("statusbar", "Statusleiste")
         host.nav.navigatePage(ThemeRoute)
         host.nav.navigatePage(page)
         host.nav.navigatePage(page)
@@ -74,8 +74,8 @@ class AppNavigationTest {
     @Test
     fun `navigating to a different scope page pushes instead of replacing the top`() {
         val host = createHost()
-        val category = ScopeRoute("statusbar", "状态栏相关")
-        val page = ScopeRoute("statusbar_icon", "状态栏图标")
+        val category = ScopeRoute("statusbar", "Statusleiste")
+        val page = ScopeRoute("statusbar_icon", "Statusleistensymbole")
         host.nav.navigatePage(category)
         host.nav.navigatePage(page)
         drainFrames()
@@ -91,7 +91,7 @@ class AppNavigationTest {
     @Test
     fun `activity recreation returns to the same page with its arguments`() {
         val host = createHost()
-        val target = ScopeRoute("statusbar", "状态栏", "clock_style", 12)
+        val target = ScopeRoute("statusbar", "Statusleiste", "clock_style", 12)
         host.nav.navigatePage(ThemeRoute)
         host.nav.navigatePage(target)
         drainFrames()

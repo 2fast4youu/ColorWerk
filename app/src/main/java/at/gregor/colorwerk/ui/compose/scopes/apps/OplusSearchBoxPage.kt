@@ -1,0 +1,32 @@
+package at.gregor.colorwerk.ui.compose.scopes.apps
+
+import at.gregor.colorwerk.R
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageSpec
+import at.gregor.colorwerk.utils.ModulePrefs
+
+/**
+ * 搜索框页：去掉推荐卡片与未安装应用建议、默认选中本地搜索页签的开关。
+ */
+object OplusSearchBoxPage {
+
+    val spec = ScopePageSpec(
+        pageKey = "oplus_search_box",
+        prefsName = ModulePrefs,
+        packName = "com.heytap.quicksearchbox",
+        scopes = arrayOf("com.heytap.quicksearchbox"),
+    ) {
+        val c = requireNotNull(context) { "ScopeScreen: Context fehlt" }
+        switch(
+            key = "remove_searchbox_app_recommend_card",
+            title = c.getString(R.string.remove_app_recommend_card),
+        )
+        switch(
+            key = "remove_searchbox_uninstalled_app_suggestions",
+            title = c.getString(R.string.remove_searchbox_uninstalled_app_suggestions),
+        )
+        switch(
+            key = "searchbox_default_search_local_tab",
+            title = c.getString(R.string.searchbox_default_search_local_tab),
+        )
+    }
+}

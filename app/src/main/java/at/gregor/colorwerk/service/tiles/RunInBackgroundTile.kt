@@ -1,0 +1,41 @@
+package at.gregor.colorwerk.service.tiles
+
+import android.service.quicksettings.Tile
+import android.service.quicksettings.TileService
+import at.gregor.colorwerk.ITileServiceController
+import at.gregor.colorwerk.service.TilesService
+import at.gregor.colorwerk.utils.closeCollapse
+import org.lsposed.lsparanoid.Obfuscate
+
+@Obfuscate
+class RunInBackgroundTile : TileService() {
+
+    private var controller: ITileServiceController? = null
+
+    override fun onStartListening() {
+        TilesService.get(this) {
+            controller = it
+            refreshData()
+        }
+    }
+
+    override fun onClick() {
+        when (qsTile.state) {
+            Tile.STATE_INACTIVE -> {
+                closeCollapse()
+                controller?.startMirageWindowMode()
+            }
+
+            Tile.STATE_ACTIVE -> {}
+
+            Tile.STATE_UNAVAILABLE -> {}
+        }
+        refreshData()
+    }
+
+    private fun refreshData() {
+        qsTile.state = if (controller == null) Tile.STATE_UNAVAILABLE
+        else Tile.STATE_INACTIVE
+        qsTile.updateTile()
+    }
+}

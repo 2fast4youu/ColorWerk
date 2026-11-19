@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.components
+package at.gregor.colorwerk.ui.compose.components
 
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.luckyzyx.luckytool.ui.compose.components.material.withoutShapeAnimation
+import at.gregor.colorwerk.ui.compose.components.material.withoutShapeAnimation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertSame

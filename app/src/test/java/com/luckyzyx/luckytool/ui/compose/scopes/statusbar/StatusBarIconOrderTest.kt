@@ -1,12 +1,12 @@
-package com.luckyzyx.luckytool.ui.compose.scopes.statusbar
+package at.gregor.colorwerk.ui.compose.scopes.statusbar
 
 import android.content.Context
 import android.content.pm.PackageInfo
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.components.PrefScopeBuilder
-import com.luckyzyx.luckytool.ui.compose.scopes.ScopePageRegistry
-import com.luckyzyx.luckytool.utils.ModulePrefs
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.PrefScopeBuilder
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageRegistry
+import at.gregor.colorwerk.utils.ModulePrefs
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

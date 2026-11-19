@@ -1,0 +1,211 @@
+package at.gregor.colorwerk.ui.compose.special
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.core.database.getStringOrNull
+import com.itos.coui.layout.CouiPageDefaults
+import com.itos.coui.text.CouiTextKind
+import com.itos.coui.text.Text as CouiText
+import com.itos.coui.theme.CouiTheme
+import at.gregor.colorwerk.R
+import at.gregor.colorwerk.ui.compose.components.coui.CouiFilledButton
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageSpec
+import at.gregor.colorwerk.ui.theme.LocalUiMode
+import at.gregor.colorwerk.ui.theme.UiMode
+import at.gregor.colorwerk.utils.AESCrypt
+import at.gregor.colorwerk.utils.CommandUtils
+import at.gregor.colorwerk.utils.DeviceUtils
+import at.gregor.colorwerk.utils.FileUtils.cacheChild
+import at.gregor.colorwerk.utils.SQLiteUtils
+import at.gregor.colorwerk.utils.SQLiteUtils.getTableData
+import at.gregor.colorwerk.utils.SQLiteUtils.readOnly
+import at.gregor.colorwerk.utils.SettingsPrefs
+import at.gregor.colorwerk.utils.copyStr
+import at.gregor.colorwerk.utils.formatFileSize
+import at.gregor.colorwerk.utils.formatStringAuto
+import at.gregor.colorwerk.utils.getFingerPrintModel
+import at.gregor.colorwerk.utils.getModelMarketName
+import at.gregor.colorwerk.utils.isZh
+import at.gregor.colorwerk.utils.safeOfNull
+import com.topjohnwu.superuser.ShellUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+/**
+ * ExtractOTA 页：读出系统 OTA 数据库（ota.db 的 pkgList 表）里各应用包的 OTA 信息并列出。
+ * 无 Xposed 作用域（packName="" / scopes=arrayOf()），数据仅本地读取展示。
+ * 下拉刷新（onRefresh）重跑加载流程。
+ * 页内文字与按钮按外观分派：COUI 线用 COUI 语义文字与胶囊按钮，Material 线用 material3 的 `Text` / `Button`。
+ */
+@SuppressLint("SdCardPath")
+object ExtractOTAPage {
+
+    /** 由内容组合时注册的加载器驱动 onRefresh（suspend 回调在内容重组时重绑定） */
+    private var reloader: (suspend () -> Unit)? = null
+
+    val spec = ScopePageSpec(
+        pageKey = "extract_ota",
+        prefsName = SettingsPrefs,
+        packName = "",
+        scopes = arrayOf(),
+        restartEnabled = false,
+        onRefresh = { reloader?.invoke() },
+    ) {
+        val c = requireNotNull(context) { "ScopeScreen: Context fehlt" }
+        custom(key = "extract_ota_body") {
+            val isCoui = LocalUiMode.current == UiMode.Coui
+            var dataList by remember { mutableStateOf<List<String>>(emptyList()) }
+
+            suspend fun load(): List<String> = withContext(Dispatchers.IO) {
+                try {
+                    val command =
+                        "${CommandUtils.cp} ${CommandUtils.otaDatabasePath} ${c.cacheDir}"
+                    ShellUtils.fastCmd(command)
+                    val dbFile = c.cacheChild("ota.db")
+                    val cursor = if (dbFile.exists()) {
+                        SQLiteUtils.openDataBase(dbFile.path, readOnly)?.getTableData("pkgList")
+                    } else null
+
+                    val list = ArrayList<String>()
+                    if (cursor != null) {
+                        val packNameIndex = cursor.getColumnIndex("package_name")
+                        val sizeIndex = cursor.getColumnIndex("size")
+                        val md5Index = cursor.getColumnIndex("md5")
+                        val activeUrlIndex = cursor.getColumnIndex("active_url")
+                        val urlIndex = cursor.getColumnIndex("url")
+
+                        val otaList = ArrayList<String>()
+                        while (cursor.moveToNext()) {
+                            val packName = cursor.getStringOrNull(packNameIndex) ?: continue
+                            val size = cursor.getStringOrNull(sizeIndex) ?: ""
+                            val md5 = cursor.getStringOrNull(md5Index) ?: ""
+                            val activeUrl = cursor.getStringOrNull(activeUrlIndex) ?: ""
+                            val url = cursor.getStringOrNull(urlIndex) ?: ""
+
+                            otaList.add(packName)
+                            if (activeUrl.isNotBlank()) otaList.add("ActiveUrl: $activeUrl")
+                            if (url.isNotBlank()) otaList.add("Url: $url")
+                            if (md5.isNotBlank()) otaList.add("MD5: $md5")
+                            if (size.isNotBlank()) {
+                                otaList.add("Size: ${formatFileSize(size.toFloatOrNull())} ($size)")
+                            }
+                            otaList.add("")
+                        }
+
+                        if (otaList.isNotEmpty()) {
+                            list.add("Model: ${getModelMarketName()} $getFingerPrintModel")
+                            list.add("")
+                            list.addAll(otaList)
+
+                            val data = DeviceUtils.getOTACOnfigs()
+                            val encrypt = safeOfNull {
+                                AESCrypt.encrypt(data, CommandUtils.otaCryptKey, true)
+                            } ?: ""
+                            if (encrypt.isNotBlank()) list.add("Verity: $encrypt")
+                            list.add("Source: #LuckyToolOTA")
+                        }
+                    }
+                    list
+                } catch (_: Exception) {
+                    emptyList()
+                }
+            }
+
+            suspend fun reload() {
+                dataList = load()
+            }
+            reloader = ::reload
+            DisposableEffect(Unit) {
+                onDispose { reloader = null }
+            }
+            LaunchedEffect(Unit) { reload() }
+
+            val noDataText = stringResource(R.string.no_ota_data)
+            val copyText = stringResource(android.R.string.copy)
+            val tipsText = if (isZh(c)) "使用此功能时,禁止删除与遗漏数据" else ""
+            val fullText = if (dataList.isNotEmpty()) formatStringAuto(dataList, "\n") else ""
+
+            Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                // 页内文字按外观分派：COUI 线取 COUI 正文字号与页面配色，Material 线保持 M3 Text
+                if (tipsText.isNotBlank()) {
+                    if (isCoui) {
+                        CouiText(
+                            text = tipsText,
+                            kind = CouiTextKind.Search,
+                            color = CouiPageDefaults.themeColors(CouiTheme.isDark).summary,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                        )
+                    } else {
+                        Text(
+                            tipsText,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+                if (fullText.isNotBlank()) {
+                    if (isCoui) {
+                        CouiText(
+                            text = fullText,
+                            kind = CouiTextKind.Search,
+                            textAlign = TextAlign.Start,
+                            color = CouiTheme.colorScheme.onSurface,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                        )
+                    } else {
+                        Text(
+                            fullText,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                        )
+                    }
+                } else {
+                    if (isCoui) {
+                        CouiText(
+                            text = noDataText,
+                            kind = CouiTextKind.Search,
+                            color = CouiPageDefaults.themeColors(CouiTheme.isDark).summary,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                    } else {
+                        Text(
+                            noDataText,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+                // 复制动作：COUI 线是 accent 填充胶囊，Material 线保持 M3 Button
+                if (isCoui) {
+                    CouiFilledButton(
+                        text = copyText,
+                        onClick = { c.copyStr(fullText) },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = fullText.isNotBlank(),
+                    )
+                } else {
+                    Button(
+                        onClick = { c.copyStr(fullText) },
+                        enabled = fullText.isNotBlank(),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text(copyText) }
+                }
+            }
+        }
+    }
+}

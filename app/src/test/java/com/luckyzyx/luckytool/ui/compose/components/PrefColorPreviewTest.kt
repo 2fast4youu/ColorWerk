@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.components
+package at.gregor.colorwerk.ui.compose.components
 
 import androidx.compose.ui.graphics.Color
 import org.junit.Assert.assertEquals

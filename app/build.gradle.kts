@@ -25,8 +25,9 @@ android {
         minSdk = gropify.project.android.minSdk
         targetSdk = gropify.project.android.targetSdk
 
-        versionCode = getVersionCode()
-        versionName = "1.3.5_beta"
+        versionCode = 1000001
+        versionName = "1.3.5-de.1"
+        resourceConfigurations.add("de")
         ndk.abiFilters.addAll(arrayOf("arm64-v8a"/*, "armeabi-v7a", "x86", "x86_64"*/))
     }
     signingConfigs {
@@ -75,6 +76,11 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            all {
+                it.maxHeapSize = "768m"
+                it.maxParallelForks = 1
+                it.systemProperty("pager.preview.output", layout.buildDirectory.dir("reports/colorwerk-preview").get().asFile.absolutePath)
+            }
         }
     }
     packaging {
@@ -97,7 +103,7 @@ androidComponents {
             val version = "$versionName($versionCode)"
             println("buildVersion -> $version ($buildType)")
 
-            output.outputFileName.set("LuckyTool_v${version}_${buildType}.apk")
+            output.outputFileName.set("ColorWerk_v${version}_${buildType}.apk")
             println("outputFileName -> ${output.outputFileName.get()}")
         }
     }

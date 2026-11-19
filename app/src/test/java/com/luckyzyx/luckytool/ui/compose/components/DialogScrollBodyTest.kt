@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.components
+package at.gregor.colorwerk.ui.compose.components
 
 import android.app.Application
 import androidx.compose.foundation.layout.Box
@@ -10,8 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
-import com.luckyzyx.luckytool.ui.compose.ComposeGestureHost
-import com.luckyzyx.luckytool.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.compose.ComposeGestureHost
+import at.gregor.colorwerk.ui.theme.AppTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -28,7 +28,7 @@ import org.robolectric.annotation.GraphicsMode
  * Column 把固定高度的子项逐项压扁，靠后的按钮行被压成 0 高度（见 [DialogScrollBody] 的说明）。
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [32], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [32], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class DialogScrollBodyTest {
 

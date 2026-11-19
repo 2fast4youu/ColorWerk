@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.theme
+package at.gregor.colorwerk.ui.theme
 
 import android.os.Looper
 import androidx.activity.ComponentActivity

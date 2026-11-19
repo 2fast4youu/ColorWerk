@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.components
+package at.gregor.colorwerk.ui.compose.components
 
 import android.app.Application
 import androidx.compose.foundation.layout.Box
@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.getOrNull
-import com.luckyzyx.luckytool.ui.compose.ComposeGestureHost
-import com.luckyzyx.luckytool.ui.theme.AppSettings
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.compose.ComposeGestureHost
+import at.gregor.colorwerk.ui.theme.AppSettings
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.ColorMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -23,16 +23,16 @@ import org.robolectric.annotation.GraphicsMode
  * 条目行又是 fillMaxWidth，所以列必须先按最宽条目定宽，否则整行会铺满屏幕。
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class TopBarOverflowMenuWidthTest {
 
     private val labels = listOf(
-        "全选分享意图",
-        "全选长按文本意图",
-        "全选打开方式意图",
-        "全选浏览器意图",
-        "清除所有数据",
+        "Wählen Sie alle Share Intent",
+        "Alle Aktionen für langes Drücken auf Text auswählen",
+        "Alle Öffnen-Aktionen auswählen",
+        "Wählen Sie alle Browser Intention",
+        "Alle Daten löschen",
     )
 
     @Test
@@ -43,13 +43,13 @@ class TopBarOverflowMenuWidthTest {
                     Box(Modifier.fillMaxSize()) {
                         TopBarOverflowMenu(
                             items = labels.map { TopBarOverflowItem(it) {} },
-                            contentDescription = "更多",
+                            contentDescription = "Mehr mehr",
                         )
                     }
                 }
             }
             host.advance()
-            host.clickLabel("更多")
+            host.clickLabel("Mehr mehr")
             host.advance()
 
             // 动作键的点击面也带 OnClick 语义，条目行的 top 在它下面。

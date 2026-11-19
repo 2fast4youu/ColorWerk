@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose.special
+package at.gregor.colorwerk.ui.compose.special
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,7 +20,7 @@ class MemcActivityOptionFilterTest {
 
     private val options = listOf(
         MemcActivityOption("com.example.app.MainActivity", "Example"),
-        MemcActivityOption("com.example.app.SettingsActivity", "设置"),
+        MemcActivityOption("com.example.app.SettingsActivity", "Einstellungen"),
         MemcActivityOption("com.example.app.PlayerActivity", "Video Player"),
     )
 
@@ -34,7 +34,7 @@ class MemcActivityOptionFilterTest {
     fun `query matches the label`() {
         assertEquals(
             listOf(options[1]),
-            filterMemcActivityOptions(options, "设置"),
+            filterMemcActivityOptions(options, "Einstellungen"),
         )
         assertEquals(
             listOf(options[2]),

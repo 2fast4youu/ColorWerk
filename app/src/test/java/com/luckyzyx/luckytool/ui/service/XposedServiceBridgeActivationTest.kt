@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.service
+package at.gregor.colorwerk.ui.service
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

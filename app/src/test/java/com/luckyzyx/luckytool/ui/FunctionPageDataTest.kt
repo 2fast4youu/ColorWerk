@@ -1,11 +1,11 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import android.content.Context
 import android.content.pm.PackageInfo
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.FunctionPageData
-import com.luckyzyx.luckytool.ui.compose.categoryBadges
-import com.luckyzyx.luckytool.ui.compose.scopes.ScopePageRegistry
+import at.gregor.colorwerk.ui.compose.FunctionPageData
+import at.gregor.colorwerk.ui.compose.categoryBadges
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageRegistry
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue

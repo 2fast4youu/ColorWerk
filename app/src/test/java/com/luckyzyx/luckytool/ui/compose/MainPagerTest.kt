@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import android.os.Bundle
@@ -34,22 +34,22 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.navigationevent.DirectNavigationEventInput
-import com.luckyzyx.luckytool.ui.compose.components.MainPageActivationEffect
-import com.luckyzyx.luckytool.ui.compose.components.PageScaffold
-import com.luckyzyx.luckytool.ui.shell.FloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.shell.LocalEnableBlur
-import com.luckyzyx.luckytool.ui.shell.ShellBadgeState
-import com.luckyzyx.luckytool.ui.shell.LocalEnableFloatingBottomBar
-import com.luckyzyx.luckytool.ui.shell.LocalFloatingBottomBarStyle
-import com.luckyzyx.luckytool.ui.shell.LocalPagerInterceptionMode
-import com.luckyzyx.luckytool.ui.shell.PagerModeCrossAxis
-import com.luckyzyx.luckytool.ui.shell.PagerModeIosLike
-import com.luckyzyx.luckytool.ui.shell.PagerModeNative
-import com.luckyzyx.luckytool.ui.theme.AppSettings
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.LocalUiMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.UiMode
+import at.gregor.colorwerk.ui.compose.components.MainPageActivationEffect
+import at.gregor.colorwerk.ui.compose.components.PageScaffold
+import at.gregor.colorwerk.ui.shell.FloatingBottomBarStyle
+import at.gregor.colorwerk.ui.shell.LocalEnableBlur
+import at.gregor.colorwerk.ui.shell.ShellBadgeState
+import at.gregor.colorwerk.ui.shell.LocalEnableFloatingBottomBar
+import at.gregor.colorwerk.ui.shell.LocalFloatingBottomBarStyle
+import at.gregor.colorwerk.ui.shell.LocalPagerInterceptionMode
+import at.gregor.colorwerk.ui.shell.PagerModeCrossAxis
+import at.gregor.colorwerk.ui.shell.PagerModeIosLike
+import at.gregor.colorwerk.ui.shell.PagerModeNative
+import at.gregor.colorwerk.ui.theme.AppSettings
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.LocalUiMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.UiMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertFalse
@@ -62,7 +62,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class MainPagerTest {
     @Test
@@ -77,16 +77,16 @@ class MainPagerTest {
         )) {
             PagerHost(mode, floating, floatingStyle = style).use { h ->
                 assertEquals(2, h.state.pagerState.settledPage)
-                h.ui.clickLabel("设置")
+                h.ui.clickLabel("Einstellungen")
                 assertEquals(4, h.state.selectedPage)
                 h.ui.advance(80)
-                h.ui.clickLabel("其他")
+                h.ui.clickLabel("Weitere")
                 assertEquals(0, h.state.selectedPage)
                 h.ui.advance(80)
-                h.ui.clickLabel("功能")
+                h.ui.clickLabel("Funktionen")
                 h.ui.advance()
                 h.assertSettled(1)
-                h.ui.clickLabel("功能")
+                h.ui.clickLabel("Funktionen")
                 h.ui.advance()
                 h.assertSettled(1)
                 h.ui.snapshot("${mode.name.lowercase()}-${if (floating) style.name else "bottom"}")
@@ -112,12 +112,12 @@ class MainPagerTest {
     @Config(sdk = [35])
     fun `liquid glass bottom bar shares the same pager navigation`() {
         PagerHost(UiMode.Coui, floating = true, floatingStyle = FloatingBottomBarStyle.IosLike, blur = true).use { h ->
-            h.ui.clickLabel("其他")
+            h.ui.clickLabel("Weitere")
             h.ui.advance()
             h.assertSettled(0)
             h.ui.drag(700f, 800f, 120f, 800f)
             h.assertSettled(1)
-            h.ui.clickLabel("设置")
+            h.ui.clickLabel("Einstellungen")
             h.ui.advance()
             h.assertSettled(4)
         }
@@ -181,10 +181,10 @@ class MainPagerTest {
             assertEquals(5, h.instances.size)
             assertEquals(listOf(0, 0, 1, 0, 0), MainTab.entries.map { h.loads[it] ?: 0 })
             val initialInstances = h.instances.toMap()
-            h.ui.clickLabel("其他")
+            h.ui.clickLabel("Weitere")
             h.ui.advance()
             assertEquals(1, h.loads[MainTab.Other])
-            h.ui.clickLabel("主页")
+            h.ui.clickLabel("Startseite")
             h.ui.advance()
             assertEquals(1, h.loads[MainTab.Home])
             MainTab.entries.forEach { assertSame(initialInstances[it], h.instances[it]) }
@@ -200,7 +200,7 @@ class MainPagerTest {
         val saved: Bundle
         val position: Int
         PagerHost(withHeaders = true).use { h ->
-            h.ui.clickLabel("设置")
+            h.ui.clickLabel("Einstellungen")
             h.ui.advance()
             h.ui.drag(410f, 1300f, 410f, 450f)
             position = h.lists.getValue(MainTab.Setting).firstVisibleItemIndex
@@ -235,10 +235,10 @@ class MainPagerTest {
                 collapsed = h.topInsets.getValue(MainTab.Home)
                 h.ui.snapshot("header-${appearance.name.lowercase()}-collapsed")
                 assertTrue("$appearance header must collapse: $expanded -> $collapsed", collapsed < expanded - 30f)
-                h.ui.clickLabel("设置")
+                h.ui.clickLabel("Einstellungen")
                 h.ui.advance()
                 assertEquals(expanded, h.topInsets.getValue(MainTab.Setting), 1f)
-                h.ui.clickLabel("主页")
+                h.ui.clickLabel("Startseite")
                 h.ui.advance()
                 assertEquals(collapsed, h.topInsets.getValue(MainTab.Home), 1f)
                 saved = h.ui.saveAndClose()
@@ -252,14 +252,14 @@ class MainPagerTest {
     @Test
     fun `back returns to home while a blocking handler takes priority over paging`() {
         PagerHost().use { h ->
-            h.ui.clickLabel("设置")
+            h.ui.clickLabel("Einstellungen")
             h.ui.advance()
             val input = DirectNavigationEventInput()
             h.ui.activity.navigationEventDispatcher.addInput(input)
             h.active = false
             h.ui.advance()
             h.ui.drag(160f, 800f, 720f, 800f)
-            h.ui.clickLabel("其他")
+            h.ui.clickLabel("Weitere")
             h.ui.advance()
             input.backCompleted()
             h.ui.advance()
@@ -330,7 +330,7 @@ class MainPagerTest {
     fun `floating style and blur changes retain page state and badges`() {
         for (mode in listOf(UiMode.Material, UiMode.Coui)) {
             PagerHost(mode, floating = true, withHeaders = true).use { h ->
-                h.ui.clickLabel("设置")
+                h.ui.clickLabel("Einstellungen")
                 h.ui.advance()
                 h.ui.drag(410f, 1300f, 410f, 450f)
                 val position = h.lists.getValue(MainTab.Setting).firstVisibleItemIndex
@@ -379,12 +379,12 @@ class MainPagerTest {
                         (it.config.getOrNull(SemanticsProperties.ContentDescription)?.contains(label) == true ||
                             it.config.getOrNull(SemanticsProperties.Text)?.any { text -> text.text == label } == true)
                 }.boundsInRoot.center
-                val settings = center("设置")
+                val settings = center("Einstellungen")
                 h.ui.drag(settings.x, settings.y, settings.x, settings.y)
                 h.assertSettled(4)
                 // 跨项拖拽选择是悬浮底栏自己的手势；COUI 底栏的滑动选择在库里实现，这里只验点击。
                 if (mode == UiMode.Material) {
-                    val other = center("其他")
+                    val other = center("Weitere")
                     h.ui.drag(settings.x, settings.y, other.x, other.y)
                     h.assertSettled(0)
                     h.ui.drag(other.x, other.y, settings.x, settings.y, cancel = true)
@@ -406,15 +406,15 @@ class MainPagerTest {
                         it.boundsInRoot.width > 0
                 }.boundsInRoot.center
                 val startX = sliderX()
-                h.ui.clickLabel("设置")
+                h.ui.clickLabel("Einstellungen")
                 h.ui.advance(48)
                 val movingX = sliderX()
                 h.ui.snapshot("material-slider-${direction.name}-moving")
                 h.ui.advance()
                 val endX = sliderX()
                 assertTrue("Slider must animate through intermediate positions: $startX -> $movingX -> $endX", movingX > minOf(startX, endX) && movingX < maxOf(startX, endX))
-                val settings = tabCenter("设置")
-                val other = tabCenter("其他")
+                val settings = tabCenter("Einstellungen")
+                val other = tabCenter("Weitere")
                 h.ui.drag(settings.x, settings.y, other.x, other.y)
                 h.assertSettled(0)
                 h.ui.drag(other.x, other.y, settings.x, settings.y, cancel = true)

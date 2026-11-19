@@ -61,5 +61,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LuckyTool"
+rootProject.name = "ColorWerk"
 include(":app", ":hidden-api-stub")

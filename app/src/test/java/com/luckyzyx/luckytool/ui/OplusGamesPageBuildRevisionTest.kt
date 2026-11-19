@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import android.content.Context
 import android.content.ContextWrapper
@@ -8,10 +8,10 @@ import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.components.PrefScopeBuilder
-import com.luckyzyx.luckytool.ui.compose.scopes.apps.OplusGamesPage
-import com.luckyzyx.luckytool.utils.ModulePrefs
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.PrefScopeBuilder
+import at.gregor.colorwerk.ui.compose.scopes.apps.OplusGamesPage
+import at.gregor.colorwerk.utils.ModulePrefs
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

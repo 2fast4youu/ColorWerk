@@ -1,7 +1,7 @@
 package org.lsposed.corepatch.hook
 
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.luckyzyx.luckytool.utils.ModulePrefs
+import at.gregor.colorwerk.utils.ModulePrefs
 import org.lsposed.corepatch.Config
 
 /**

@@ -1,16 +1,16 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.components.PrefScopeBuilder
-import com.luckyzyx.luckytool.ui.compose.scopes.ScopePageRegistry
-import com.luckyzyx.luckytool.ui.compose.scopes.ScopePageSpec
-import com.luckyzyx.luckytool.ui.compose.scopes.related.ApplicationRelatedPage
-import com.luckyzyx.luckytool.ui.compose.scopes.related.LauncherRelatedPage
-import com.luckyzyx.luckytool.utils.ModulePrefs
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.PrefScopeBuilder
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageRegistry
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageSpec
+import at.gregor.colorwerk.ui.compose.scopes.related.ApplicationRelatedPage
+import at.gregor.colorwerk.ui.compose.scopes.related.LauncherRelatedPage
+import at.gregor.colorwerk.utils.ModulePrefs
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -136,7 +136,7 @@ class ScopePageReachabilityTest {
         assertTrue("应用分身入口行缺失：$multiApp", "page:multiAppFragment" in multiApp)
 
         // 启动器页：自定义浮窗支持列表仅在显示模式 == "3" 时发射
-        val zoomWindow = buildIndexKeys(LauncherRelatedPage.spec) {
+        val zoomWindow = buildIndexKeys(at.gregor.colorwerk.ui.compose.scopes.related.FloatingWindowRelatedPage.spec) {
             putString("custom_app_floating_window_display_mode", "3")
         }
         assertTrue("自定义浮窗入口行缺失：$zoomWindow", "page:zoomWindowFragment" in zoomWindow)

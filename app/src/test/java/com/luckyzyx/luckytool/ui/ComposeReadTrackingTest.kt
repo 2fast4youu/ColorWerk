@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf

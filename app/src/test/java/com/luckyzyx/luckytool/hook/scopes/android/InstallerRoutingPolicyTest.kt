@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.hook.scopes.android
+package at.gregor.colorwerk.hook.scopes.android
 
 import android.app.Application
 import android.content.ComponentName

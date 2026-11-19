@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import androidx.compose.foundation.layout.Box
@@ -14,18 +14,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import com.itos.coui.effect.CouiFloatingRenderer
-import com.luckyzyx.luckytool.ui.compose.components.PageScaffold
-import com.luckyzyx.luckytool.ui.compose.components.RootScaffold
-import com.luckyzyx.luckytool.ui.compose.components.TabsScaffold
-import com.luckyzyx.luckytool.ui.compose.components.ScopeScreen
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.ThemeController
-import com.luckyzyx.luckytool.ui.theme.ThemePrefs
-import com.luckyzyx.luckytool.ui.theme.UiMode
-import com.luckyzyx.luckytool.utils.PrefState
-import com.luckyzyx.luckytool.utils.SettingsPrefs
-import com.luckyzyx.luckytool.utils.appPrefs
+import at.gregor.colorwerk.ui.compose.components.PageScaffold
+import at.gregor.colorwerk.ui.compose.components.RootScaffold
+import at.gregor.colorwerk.ui.compose.components.TabsScaffold
+import at.gregor.colorwerk.ui.compose.components.ScopeScreen
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.ThemeController
+import at.gregor.colorwerk.ui.theme.ThemePrefs
+import at.gregor.colorwerk.ui.theme.UiMode
+import at.gregor.colorwerk.utils.PrefState
+import at.gregor.colorwerk.utils.SettingsPrefs
+import at.gregor.colorwerk.utils.appPrefs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -35,7 +35,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ThemeSwitchCrashTest {
     @Test
@@ -51,7 +51,7 @@ class ThemeSwitchCrashTest {
                 AppTheme {
                     val context = LocalContext.current
                     val settings = remember { PrefState.of(context, SettingsPrefs) }
-                    PageScaffold(title = "设置") { padding ->
+                    PageScaffold(title = "Einstellungen") { padding ->
                         ScopeScreen(
                             state = settings,
                             modifier = Modifier.fillMaxSize().padding(padding),
@@ -59,7 +59,7 @@ class ThemeSwitchCrashTest {
                             group()
                             list(
                                 key = ThemeController.KEY_UI_MODE,
-                                title = "界面风格",
+                                title = "Oberflächenstil",
                                 entries = UiMode.entries.map { it.name }.toTypedArray(),
                                 entryValues = UiMode.entries.map { it.value }.toTypedArray(),
                                 default = UiMode.DEFAULT_VALUE,
@@ -72,13 +72,13 @@ class ThemeSwitchCrashTest {
         }
         assertEquals(UiMode.Material, ThemeController.getUiMode(host.activity))
 
-        host.clickText("界面风格")
+        host.clickText("Oberflächenstil")
         host.advance()
         host.clickText("Coui")
         host.advance(3000)
 
         assertEquals(UiMode.Coui, ThemeController.getUiMode(host.activity))
-        assertNotNull("COUI 页壳应渲染出页面标题", host.textNode("设置"))
+        assertNotNull("COUI 页壳应渲染出页面标题", host.textNode("Einstellungen"))
         assertNotNull("切换后行尾应显示当前值 Coui", host.textNode("Coui"))
     }
 
@@ -146,7 +146,7 @@ class ThemeSwitchCrashTest {
                 AppTheme {
                     RootScaffold { _ ->
                         TabsScaffold(bottomBar = { Text("底栏") }) { tabPadding ->
-                            PageScaffold(title = "设置") { pagePadding ->
+                            PageScaffold(title = "Einstellungen") { pagePadding ->
                                 Box(
                                     Modifier
                                         .fillMaxSize()
@@ -169,6 +169,6 @@ class ThemeSwitchCrashTest {
 
         assertEquals(UiMode.Coui, ThemeController.getUiMode(host.activity))
         assertNotNull("COUI 全壳应仍渲染页面内容", host.textNode("页面内容"))
-        assertNotNull("COUI 全壳应渲染出页面标题", host.textNode("设置"))
+        assertNotNull("COUI 全壳应渲染出页面标题", host.textNode("Einstellungen"))
     }
 }

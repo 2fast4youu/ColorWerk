@@ -1,8 +1,8 @@
-package com.luckyzyx.luckytool.utils
+package at.gregor.colorwerk.utils
 
 import android.app.Application
-import com.luckyzyx.luckytool.IGlobalFuncController
-import com.luckyzyx.luckytool.R
+import at.gregor.colorwerk.IGlobalFuncController
+import at.gregor.colorwerk.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

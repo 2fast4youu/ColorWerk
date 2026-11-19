@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.utils
+package at.gregor.colorwerk.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider

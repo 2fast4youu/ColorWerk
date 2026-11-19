@@ -1,4 +1,4 @@
-package com.luckyzyx.luckytool.ui.compose
+package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
 import android.graphics.Bitmap
@@ -18,15 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import com.luckyzyx.luckytool.ui.compose.components.LocalScopeTopInset
-import com.luckyzyx.luckytool.ui.compose.components.ScopeScreen
-import com.luckyzyx.luckytool.ui.compose.components.PageScaffold
-import com.luckyzyx.luckytool.ui.theme.AppSettings
-import com.luckyzyx.luckytool.ui.theme.ColorMode
-import com.luckyzyx.luckytool.ui.theme.LocalUiMode
-import com.luckyzyx.luckytool.ui.theme.AppTheme
-import com.luckyzyx.luckytool.ui.theme.UiMode
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.LocalScopeTopInset
+import at.gregor.colorwerk.ui.compose.components.ScopeScreen
+import at.gregor.colorwerk.ui.compose.components.PageScaffold
+import at.gregor.colorwerk.ui.theme.AppSettings
+import at.gregor.colorwerk.ui.theme.ColorMode
+import at.gregor.colorwerk.ui.theme.LocalUiMode
+import at.gregor.colorwerk.ui.theme.AppTheme
+import at.gregor.colorwerk.ui.theme.UiMode
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -40,7 +40,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [31, 32, 33, 34, 35], application = Application::class, qualifiers = "zh-rCN-w411dp-h880dp-xhdpi")
+@Config(sdk = [31, 32, 33, 34, 35], application = Application::class, qualifiers = "de-rDE-w411dp-h880dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class PageTopAppBarTest {
     @Test
@@ -78,7 +78,7 @@ class PageTopAppBarTest {
                 AppTheme(AppSettings(colorMode = ColorMode.LIGHT, dynamicColor = false), uiMode = mode) {
                     Scaffold(contentWindowInsets = WindowInsets(0, 0, 0, 0)) {
                         PageScaffold(
-                            title = if (scopeList) "系统设置" else "功能",
+                            title = if (scopeList) "系统设置" else "Funktionen",
                             onBack = if (scopeList) ({}) else null,
                         ) { padding ->
                             val top = padding.calculateTopPadding().value

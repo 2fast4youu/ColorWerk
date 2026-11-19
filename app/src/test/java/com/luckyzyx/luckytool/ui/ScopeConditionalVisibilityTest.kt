@@ -1,11 +1,11 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
-import com.luckyzyx.luckytool.ui.compose.components.PrefScopeBuilder
-import com.luckyzyx.luckytool.ui.compose.scopes.related.ApplicationRelatedPage
-import com.luckyzyx.luckytool.utils.PrefState
+import at.gregor.colorwerk.ui.compose.components.PrefScopeBuilder
+import at.gregor.colorwerk.ui.compose.scopes.related.ApplicationRelatedPage
+import at.gregor.colorwerk.utils.PrefState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before

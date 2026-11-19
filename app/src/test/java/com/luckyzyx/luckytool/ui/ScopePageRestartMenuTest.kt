@@ -1,6 +1,6 @@
-package com.luckyzyx.luckytool.ui
+package at.gregor.colorwerk.ui
 
-import com.luckyzyx.luckytool.ui.compose.scopes.ScopePageRegistry
+import at.gregor.colorwerk.ui.compose.scopes.ScopePageRegistry
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
 /**
  * 冻结「重启作用域菜单默认显示、只有没有可重启作用域的页面才关闭」这一语义。
  *
- * [com.luckyzyx.luckytool.ui.compose.scopes.ScopePageSpec.restartEnabled] 默认 true（opt-out）：
+ * [at.gregor.colorwerk.ui.compose.scopes.ScopePageSpec.restartEnabled] 默认 true（opt-out）：
  * 顶栏按钮由 FunctionPage 按该开关渲染，而对话框对空作用域直接返回 —— 空作用域的页若留着默认值，
  * 按钮点下去不会有任何反应。所以这里要求空作用域页必须显式关闭，其余页面保持开启。
  */
