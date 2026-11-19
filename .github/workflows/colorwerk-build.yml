@@ -52,13 +52,42 @@ jobs:
           EXPECTED_CERT: ${{ vars.COLORWERK_RELEASE_CERT_SHA256 }}
         run: |
           python3 - <<'PY'
-          import glob, os, re, subprocess
+          import glob, os, re, subprocess, hashlib, zipfile
           apk = glob.glob('app/build/outputs/apk/release/*.apk')
           assert len(apk) == 1, apk
           signer = sorted(glob.glob(os.environ['ANDROID_HOME'] + '/build-tools/*/apksigner'))[-1]
-          result = subprocess.check_output([signer, 'verify', '--print-certs', apk[0]], text=True)
-          digest = re.search(r'Signer\s+#\d+\s+certificate\s+SHA-256\s+digest:\s*([0-9a-fA-F]{64})', result).group(1)
-          assert digest.lower() == os.environ['EXPECTED_CERT'].lower()
+          subprocess.check_call([signer, 'verify', apk[0]])
+          with zipfile.ZipFile(apk[0]) as archive:
+              certs = [n for n in archive.namelist() if re.fullmatch(r'META-INF/[^/]+\.(RSA|DSA|EC)', n)]
+              assert len(certs) == 1, certs
+              block = archive.read(certs[0])
+          marker = bytes.fromhex('06092a864886f70d010702a0')
+          position = block.find(marker)
+          assert position >= 0, 'PKCS7 SignedData missing'
+          def child(i):
+              length_byte = block[i + 1]
+              header = 1 + (length_byte & 0x7f if length_byte & 0x80 else 0)
+              return i + 1 + header
+          def end(i):
+              length_byte = block[i + 1]
+              header = 1 + (length_byte & 0x7f if length_byte & 0x80 else 0)
+              length = int.from_bytes(block[i + 2:i + 2 + (length_byte & 0x7f)], 'big') if length_byte & 0x80 else length_byte
+              return i + 1 + header + length
+          i = child(position + len(marker) - 1)
+          assert block[i] == 0x30
+          i = child(i)
+          assert block[i:i + 3] == bytes.fromhex('020101')
+          i += 3
+          assert block[i] == 0x31
+          i = end(i)
+          assert block[i] == 0x30
+          i = end(i)
+          assert block[i] == 0xa0
+          cert_start = child(i)
+          assert block[cert_start] == 0x30
+          cert_end = end(cert_start)
+          digest = hashlib.sha256(block[cert_start:cert_end]).hexdigest()
+          assert digest.lower() == os.environ['EXPECTED_CERT'].lower(), 'Unexpected signing certificate'
           print('APK-Signatur entspricht dem eigenen ColorWerk-Schlüssel.')
           PY
       - name: APK und Prüfberichte bereitstellen
