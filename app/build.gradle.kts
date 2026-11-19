@@ -25,8 +25,8 @@ android {
         minSdk = gropify.project.android.minSdk
         targetSdk = gropify.project.android.targetSdk
 
-        versionCode = 1000002
-        versionName = "1.3.5-de.2"
+        versionCode = 1000003
+        versionName = "1.3.5-de.3"
         resourceConfigurations.add("de")
         ndk.abiFilters.addAll(arrayOf("arm64-v8a"/*, "armeabi-v7a", "x86", "x86_64"*/))
     }
