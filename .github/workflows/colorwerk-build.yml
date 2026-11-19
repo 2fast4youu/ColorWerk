@@ -109,8 +109,9 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           set -e
+          VERSION=$(sed -n 's/.*versionName = "\([^"]*\)".*/\1/p' app/build.gradle.kts | head -1)
           notes='Deutscher ColorWerk-Fork von LuckyTool. Eigene Paketkennung und Signatur, arm64-v8a. Benötigt ein passendes LSPosed-/Xposed-Framework. Kein direktes Update über das Original; ColorOS-Hooks nicht auf jedem Gerät geprüft.'
-          gh release create "$TAG" app/build/outputs/apk/release/*.apk --repo "$GITHUB_REPOSITORY" --title "ColorWerk 1.3.5-de.1" --notes "$notes" --prerelease
+          gh release create "$TAG" app/build/outputs/apk/release/*.apk --repo "$GITHUB_REPOSITORY" --title "ColorWerk $VERSION" --notes "$notes" --prerelease
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
       - name: Schlüssel entfernen
         if: always()
