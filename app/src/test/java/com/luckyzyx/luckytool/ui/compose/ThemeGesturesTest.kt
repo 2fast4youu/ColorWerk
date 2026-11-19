@@ -1,3 +1,6 @@
+// Test-only outer scaffold has explicit zero insets; inner page owns padding.
+@file:android.annotation.SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 package at.gregor.colorwerk.ui.compose
 
 import android.app.Application
@@ -53,7 +56,7 @@ class ThemeGesturesTest {
                     assertFalse(ShellSettingsController.get(h.ui.activity).swipeDismiss)
                     h.scrollTo("Wischgesten für Seiten")
                     h.ui.snapshot("theme-${mode.name.lowercase()}-${color.name.lowercase()}")
-                    for ((index, label) in listOf(2 to "Wie bei iOS", 0 to "Ausfall", 1 to "Achsenübergreifend")) {
+                    for ((index, label) in listOf(2 to "Wie bei iOS", 0 to "Standard", 1 to "Achsenübergreifend")) {
                         h.ui.clickText("Wischgesten für Seiten")
                         h.ui.advance()
                         h.ui.snapshot("theme-${mode.name.lowercase()}-${color.name.lowercase()}-menu")

@@ -1,3 +1,6 @@
+// Test-only outer scaffold has explicit zero insets; inner page owns padding.
+@file:android.annotation.SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 package at.gregor.colorwerk.ui.compose
 
 import android.app.Application

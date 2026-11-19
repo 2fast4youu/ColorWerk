@@ -98,9 +98,10 @@ class StatusBarClock : YukiBaseHooker() {
                         if (clockName != "clock") return@after
                     }
 
+                    val mainHandler = Handler(clockView.context.mainLooper)
                     Timer().schedule(object : TimerTask() {
                         override fun run() {
-                            Handler(clockView.context.mainLooper).post {
+                            mainHandler.post {
                                 firstMethod { name = "updateClock" }.of(clockView).invoke()
                             }
                         }

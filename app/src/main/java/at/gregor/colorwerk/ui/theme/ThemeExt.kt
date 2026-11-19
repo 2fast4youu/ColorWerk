@@ -49,10 +49,10 @@ fun rememberAppColorScheme(
     specVersion: ColorSpec.SpecVersion = ColorSpec.SpecVersion.SPEC_2025,
 ): ColorScheme {
     val context = LocalContext.current
-    val seed = if (seedColor == Color.Unspecified) {
+    val seed = if (seedColor == Color.Unspecified && android.os.Build.VERSION.SDK_INT >= 31) {
         (if (isDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)).primary
     } else {
-        seedColor
+        if (seedColor == Color.Unspecified) Color(0xFF6750A4) else seedColor
     }
     return rememberDynamicColorScheme(
         seedColor = seed,

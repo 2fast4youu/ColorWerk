@@ -61,7 +61,8 @@ class TopBarOverflowMenuWidthTest {
             assertEquals("弹层条目数", labels.size, rows.size)
             rows.forEach { row ->
                 // 160dp 的最小列宽在 xhdpi 下是 320px，且必须窄于窗口（822px）。
-                assertEquals("条目行宽度", 320f, row.boundsInRoot.width)
+                assertTrue("Menu accommodates German labels within 160–320 dp", row.boundsInRoot.width in 320f..640f)
+                assertEquals(rows.first().boundsInRoot.width, row.boundsInRoot.width)
                 assertTrue("条目行不得铺满窗口", row.boundsInRoot.width < host.width)
             }
         }

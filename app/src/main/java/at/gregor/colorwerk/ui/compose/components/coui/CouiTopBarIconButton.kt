@@ -44,7 +44,7 @@ internal fun CouiTopBarIconButton(
     } else {
         null
     }
-    if (renderer != null) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && renderer != null) {
         val density = LocalDensity.current.density
         val contour = LocalCouiContourGlowEnabled.current
         TopAppBarSurface(

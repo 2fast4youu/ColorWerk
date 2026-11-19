@@ -218,7 +218,7 @@ private fun CouiTopBarOverflowMenu(
             ) {
                 Column(
                     modifier = Modifier
-                        .widthIn(min = 160.dp)
+                        .widthIn(min = 160.dp, max = 320.dp)
                         // 弹层按 WRAP_CONTENT 测量，行内 fillMaxWidth 会把宽度撑到整个窗口；
                         // 先按内容最宽行定宽，行再填满这个宽度，才会收成菜单而不是铺满屏幕。
                         .width(IntrinsicSize.Max)

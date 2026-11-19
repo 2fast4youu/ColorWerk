@@ -102,6 +102,8 @@ fun HomePage(activity: MainActivity, isCurrentPage: Boolean = true) {
     var showDonateList by remember { mutableStateOf(false) }
     var showQrType by remember { mutableIntStateOf(-1) }
     var updateStage by remember { mutableStateOf<UpdateStage?>(null) }
+    val unavailableFramework = "${stringResource(R.string.framework_version)} —"
+    val copiedDeviceInfo = stringResource(R.string.home_device_info_copied)
 
     // 长按作者名切换隐藏功能：两条线共用同一份写入与文案，避免两处分叉各自维护
     fun toggleHiddenFunction() {
@@ -145,7 +147,7 @@ fun HomePage(activity: MainActivity, isCurrentPage: Boolean = true) {
             }
             rootVersion = versions.first
             frameworkVersion = versions.second.takeUnless { "null" in it }
-                ?: "${context.getString(R.string.framework_version)} —"
+                ?: unavailableFramework
         }
         GlobalFuncService.get(activity) { controller ->
             deviceInfoJob?.cancel()
@@ -194,7 +196,7 @@ fun HomePage(activity: MainActivity, isCurrentPage: Boolean = true) {
         onStatusLongClick = statusCardLongClick,
         onCopyDeviceInfo = {
             context.copyStr(DeviceUtils.getOTACOnfigs())
-            context.showToast(context.getString(R.string.home_device_info_copied))
+            context.showToast(copiedDeviceInfo)
         },
         onDonate = {
             context.openUrl(

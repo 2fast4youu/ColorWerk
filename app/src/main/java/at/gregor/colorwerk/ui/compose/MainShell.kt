@@ -424,7 +424,7 @@ private fun CouiTabsBottomBar(
 ) {
     // 悬浮底栏要采样整块页面：采样源由标签外壳的 COUI Scaffold 底栏槽位提供，
     // 不在槽位里（例如单独组合标签外壳）拿不到，只能退回平铺底栏。
-    if (renderer != null && LocalCouiTabsBarSlot.current) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && renderer != null && LocalCouiTabsBarSlot.current) {
         // kit 的菜单宽 = 可用宽 - 136dp（两端附件位），5 个页签只剩每项约 37dp。
         // 这里按页签目标宽度反推菜单宽，再把这 136dp 加回去：kit 扣完正好落在目标宽度上，
         // 胶囊宽度因此不随屏宽浮动，页签也拿到设计宽度；溢出的部分落在屏幕外，不参与绘制。
