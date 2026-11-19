@@ -60,6 +60,7 @@ for e in base:
  key=e.get('name');entry=copy.deepcopy(lookup.get(key,e))
  # Keep original non-translatable declarations on default resources.
  if e.get('translatable')=='false':entry.set('translatable','false')
+ if key=='authorized':entry.text=r'Deutscher Fork von LuckyTool\nOriginalentwicklung: luckyzyx · Lizenz: GPL-3.0'
  merged.append(entry)
 for key in extra:merged.append(copy.deepcopy(lookup[key]))
 for path,tree in [(res/'values-de/strings.xml',german),(res/'values/strings.xml',merged)]:

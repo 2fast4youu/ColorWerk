@@ -115,9 +115,9 @@ class HomeDashboardTest {
             assertNotNull(h.ui.textNode("Weniger Geräteinformationen"))
             h.ui.clickText("Weniger Geräteinformationen")
             h.ui.advance()
-            h.scrollTo("Unterstützungsentwicklung")
-            h.ui.clickText("Unterstützungsentwicklung")
-            h.longClick("Unterstützungsentwicklung")
+            h.scrollTo("Entwicklung unterstützen")
+            h.ui.clickText("Entwicklung unterstützen")
+            h.longClick("Entwicklung unterstützen")
             assertEquals(1, h.donate)
             assertEquals(1, h.donateMethods)
             h.scrollTo("Mehr Geräteinformationen")
@@ -148,8 +148,8 @@ class HomeDashboardTest {
                 val bounds = h.ui.textNode(model)!!.boundsInRoot
                 assertTrue(bounds.left >= 0 && bounds.right <= 720)
                 h.ui.snapshot("home-${mode.name.lowercase()}-large-rtl")
-                h.scrollTo("Unterstützungsentwicklung")
-                h.ui.clickText("Unterstützungsentwicklung")
+                h.scrollTo("Entwicklung unterstützen")
+                h.ui.clickText("Entwicklung unterstützen")
                 assertEquals(1, h.donate)
             }
         }
